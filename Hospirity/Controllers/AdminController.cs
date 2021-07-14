@@ -332,7 +332,10 @@ namespace Hospirity.Controllers
             return Json(info, JsonRequestBehavior.AllowGet);
         }
 
-
+        public Actionresult ABC()
+        {
+            return View();
+        }
         #endregion
     }
 }
