@@ -1,0 +1,250 @@
+﻿@model Hospirity.Models.Career
+
+@{
+    ViewBag.Title = "Career";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    int j = 0;
+}
+
+<!-- ########## START: MAIN PANEL ########## -->
+<div class="sl-mainpanel">
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/Admin">Dashboard</a>
+        <a class="breadcrumb-item" href="#.">Homepage</a>
+        <span class="breadcrumb-item active">Career</span>
+    </nav>
+
+    <div class="sl-pagebody">
+
+        <div class="card pd-20 pd-sm-40">
+            <h6 class="card-body-title">Career</h6>
+
+            @using (Html.BeginForm("Career", "Homepage", FormMethod.Post, new { @class = "form -sample" }))
+            {
+                <div class="form-layout">
+                    <div class="row mg-b-25">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="form-control-label">Title: <span class="tx-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.Title, new { @placeholder = "Title", @required = "required", @class = "form-control" })
+                            </div>
+                        </div><!-- col-8 -->
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="form-control-label">Description: <span class="tx-danger">*</span></label>
+                                @Html.TextAreaFor(model => model.Des, new { @placeholder = "Description", @required = "required", @class = "form-control", @rows = "5" })
+                            </div>
+                        </div><!-- col-8 -->
+                    </div><!-- row -->
+
+                    <div class="form-layout-footer">
+                        <button class="btn btn-info mg-r-5">Submit</button>
+                    </div><!-- form-layout-footer -->
+                </div>
+            }
+
+        </div>
+
+        <div class="card pd-20 pd-sm-40">
+
+            <div class="table-wrapper">
+                <table id="datatable2" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="wd-20p">Title</th>
+                            <th class="wd-30p">Description</th>
+                            <th class="wd-10p">Edit</th>
+                            <th class="wd-30p">Status</th>
+                            <th class="wd-10p">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.CareerList != null)
+                        {
+                            foreach (var i in ViewBag.CareerList)
+                            {
+                                <tr>
+                                    <td>@(++j)</td>
+                                    <td>
+                                        @i.Title
+                                    </td>
+                                    <td>
+                                        <p style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width: 50em;">
+                                            @i.Des
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Edit('@i.CId')">Edit</a>
+                                    </td>
+                                    @if (i.IsActive == "True")
+                                    {
+                                        <td><a href="javascript:void(0)" onclick="ChngStatus('@i.CId','@i.IsActive')" class="btn btn-success btn-xs">Active</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="javascript:void(0)" onclick="ChngStatus('@i.CId','@i.IsActive')" class="btn btn-danger btn-xs">Inactive</a></td>
+                                    }
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Delete('@i.CId')" class="btn btn-danger btn-xs">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div><!-- table-wrapper -->
+        </div>
+
+    </div>
+
+</div>
+<!-- ########## END: MAIN PANEL ########## -->
+
+<!--Start Modal-->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Career</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body pd-20">
+                <div class="card">
+                    <form method="post" action="/Homepage/Career" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Title: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" id="title" required="required" class="form-control" maxlength="200" value="" name="Title" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Description: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="des" required="required" class="form-control" name="Des" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="cid" type="hidden" name="CId" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End Modal-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function ChngStatus(id, status) {
+        $.getJSON('/Homepage/CareerStatus/', { id: id, status: status }, function (data) {
+            location.reload();
+        });
+    }
+
+    function Delete(id) {
+        var result = confirm("Are you sure want to delete?");
+        if (result) {
+            $.getJSON('/Homepage/DeleteCareer/', { id: id }, function (data) {
+                location.reload();
+            });
+        }
+    }
+
+    function holdModal(modalId) {
+        $('#' + modalId).modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+    }
+
+    function Edit(id) {
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Homepage/getcareer',
+            data: { id: id },
+            success: function (data) {
+                $("#cid").val(data.CId);
+                $("#title").val(data.Title);
+                $("#des").val(data.Des);
+                holdModal('EditModal');
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function (event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function (event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function (e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+</script>
+

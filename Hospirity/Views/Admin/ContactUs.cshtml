@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    int j = 0;
+}
+
+<!-- ########## START: MAIN PANEL ########## -->
+<div class="sl-mainpanel">
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/Admin">Dashboard</a>
+        <span class="breadcrumb-item active">Contact Us</span>
+    </nav>
+
+    <div class="sl-pagebody">
+
+        <div class="card pd-20 pd-sm-40">
+
+            <div class="table-wrapper">
+                <table id="datatable2" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="wd-20p">Name</th>
+                            <th class="wd-20p">Email</th>
+                            <th class="wd-20p">Mobile No</th>
+                            <th class="wd-30p">Message</th>
+                            <th class="wd-10p">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.ContactUsList != null)
+                        {
+                            foreach (var i in ViewBag.ContactUsList)
+                            {
+                                <tr>
+                                    <td>@(++j)</td>
+                                    <td>
+                                        @i.Name
+                                        @*<p style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width: 25em;">
+                                                @i.BannerTitle
+                                            </p>*@
+                                    </td>
+                                    <td>
+                                        @i.Email
+                                    </td>
+                                    <td>
+                                        @i.MobileNo
+                                    </td>
+                                    <td>
+                                        <p style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width: 35em;">
+                                            @i.Message
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Delete('@i.ContactId')" class="btn btn-danger btn-xs">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div><!-- table-wrapper -->
+        </div>
+
+    </div>
+
+</div>
+<!-- ########## END: MAIN PANEL ########## -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function Delete(id) {
+        var result = confirm("Are you sure want to delete?");
+        if (result) {
+            $.getJSON('/Admin/DeleteContact/', { id: id }, function (data) {
+                location.reload();
+            });
+        }
+    }
+</script>

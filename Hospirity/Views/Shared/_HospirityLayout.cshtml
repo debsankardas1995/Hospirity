@@ -1,0 +1,146 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <title>Hospirity</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="Hospirity">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+    <meta name="description" content="Hospirity">
+    <!-- favicon icon -->
+    <link rel="shortcut icon" href="/Content/Home/images/favicon.png">
+    <!-- style sheets and font icons  -->
+    <link rel="stylesheet" type="text/css" href="/Content/Home/css/font-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/Home/css/theme-vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/Home/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/Home/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/Home/css/responsive.css" />
+</head>
+<body data-mobile-nav-style="classic">
+    <!-- start header -->
+    <header class="header-with-topbar">
+        <nav class="navbar navbar-expand-lg top-space navbar-light bg-white header-light fixed-top navbar-boxed header-reverse-scroll">
+            <div class="container-fluid nav-header-container">
+                <div class="col-auto col-sm-6 col-lg-2 mr-auto pl-lg-0">
+                    <a class="navbar-brand" href="/Home">
+                        <img src="/Content/Home/images/hospirity-header-logo.png" class="default-logo" alt="">
+                        <img src="/Content/Home/images/hospirity-header-logo.png" class="alt-logo" alt="">
+                        <img src="/Content/Home/images/hospirity-header-logo-mobile.png" class="mobile-logo" alt="">
+                    </a>
+                </div>
+                <div class="col-auto col-lg-8 menu-order px-lg-0">
+                    <button class="navbar-toggler float-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                        <span class="navbar-toggler-line"></span>
+                    </button>
+                    <div class=" collapse navbar-collapse justify-content-center" id="navbarNav">
+                        <ul class="navbar-nav alt-font">
+                            <li class="nav-item"><a href="/Home" class="nav-link">HOME</a> </li>
+                            <li class="nav-item"><a href="/About" class="nav-link">ABOUT US</a> </li>
+                            <li class="nav-item dropdown simple-dropdown">
+                                <a href="#" class="nav-link">SERVICES</a>
+                                <i class="fa fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown"><a href="#">Consulting</a></li>
+                                    <li class="dropdown"><a href="#">Soft Skills Training</a></li>
+                                    <li class="dropdown"><a href="#">Growth Marketing</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown simple-dropdown">
+                                <a href="#" class="nav-link">LEARNING & DEVELOPMENT</a>
+                                <i class="fa fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown"><a href="#">Videos</a></li>
+                                    <li class="dropdown"><a href="#">Training Materials</a></li>
+                                    <li class="dropdown"><a href="#">Workshops</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="/Contact" class="nav-link">CONTACT</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-auto col-lg-2 text-right pr-0 font-size-0">
+                    <div class="header-social-icon d-inline-block">
+                        <a href="http://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="http://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="http://www.twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- end header -->
+    @RenderBody()
+    <!-- start footer -->
+    <footer class="footer-dark bg-slate-blue">
+        <div class="footer-top padding-seven-tb lg-padding-eight-tb sm-padding-50px-tb">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- start footer column -->
+                    <div class="col-12 col-lg-3 col-sm-6 order-5 order-lg-0 text-md-center text-lg-left last-paragraph-no-margin">
+                        <a href="/Home" class="footer-logo margin-25px-bottom margin-5px-top d-inline-block"><img src="/Content/Home/images/hospirity-footer-logo.png" alt="Hospirity"></a>
+                        <p>To provide result-driven professional solutions to fortify the future of the hospitality.</p>
+                        <p>&copy; Copyright 2021 Hospirity.</p>
+                    </div>
+                    <!-- end footer column -->
+                    <!-- start footer column -->
+                    <div class="col-12 col-lg offset-xl-1 col-md-3 col-sm-4 order-1 order-lg-0 md-margin-40px-bottom xs-margin-25px-bottom">
+                        <span class="alt-font font-weight-500 d-block text-white margin-20px-bottom xs-margin-10px-bottom">Company</span>
+                        <ul>
+                            <li><a href="/Home">Home</a></li>
+                            <li><a href="/About">About Us</a></li>
+                            <li><a href="/Contact">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                    <!-- start footer column -->
+                    <div class="col-12 col-lg col-md-3 col-sm-4 order-2 order-lg-0 md-margin-40px-bottom xs-margin-25px-bottom">
+                        <span class="alt-font font-weight-500 d-block text-white margin-20px-bottom xs-margin-10px-bottom">Learning </span>
+                        <ul>
+                            <li><a href="#">Videos</a></li>
+                            <li><a href="#">Training Materials</a></li>
+                            <li><a href="#">Workshops</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                    <!-- start footer column -->
+                    <div class="col-12 col-lg col-md-3 col-sm-4 order-3 order-lg-0 md-margin-40px-bottom xs-margin-25px-bottom">
+                        <span class="alt-font font-weight-500 d-block text-white margin-20px-bottom xs-margin-10px-bottom">Additional</span>
+                        <ul>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="#">Latest News</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                    <!-- start footer column -->
+                    <div class="col-12 col-lg col-md-3 col-sm-6 order-4 order-lg-0 xs-margin-25px-bottom">
+                        <span class="alt-font font-weight-500 d-block text-white margin-20px-bottom xs-margin-10px-bottom">Services</span>
+                        <ul>
+                            <li><a href="#">Consulting</a></li>
+                            <li><a href="#">Soft Skills Training</a></li>
+                            <li><a href="#">Growth Marketing</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+    <!-- start scroll to top -->
+    <a class="scroll-top-arrow" href="javascript:void(0);"><i class="feather icon-feather-arrow-up"></i></a>
+    <!-- end scroll to top -->
+    <!-- javascript -->
+    <script type="text/javascript" src="/Content/Home/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/Content/Home/js/theme-vendors.min.js"></script>
+    <script type="text/javascript" src="/Content/Home/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+﻿@model Hospirity.Models.BannerImage
+
+@{
+    ViewBag.Title = "Banner";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    int j = 0;
+}
+
+<!-- ########## START: MAIN PANEL ########## -->
+<div class="sl-mainpanel">
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/Admin">Dashboard</a>
+        <a class="breadcrumb-item" href="#.">Homepage</a>
+        <span class="breadcrumb-item active">Banner</span>
+    </nav>
+
+    <div class="sl-pagebody">
+
+        <div class="card pd-20 pd-sm-40">
+            <h6 class="card-body-title">Banner Image</h6>
+
+            @using (Html.BeginForm("AddBanner", "Homepage", FormMethod.Post, new { @class = "form -sample", enctype = "multipart/form-data" }))
+            {
+                <div class="form-layout">
+                    <div class="row mg-b-25">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="form-control-label">Banner Title: <span class="tx-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.BannerTitle, new { @placeholder = "Enter Banner Text", @required = "required", @class = "form-control", @type = "text", @maxlength = "100" })
+                            </div>
+                        </div><!-- col-8 -->
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="form-control-label">Banner Description: <span class="tx-danger">*</span></label>
+                                @Html.TextAreaFor(model => model.BannerDes, new { @placeholder = "Enter Banner Description", @required = "required", @class = "form-control" })
+                            </div>
+                        </div><!-- col-8 -->
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="form-control-label">Banner Image: <span class="tx-danger">*</span></label>
+                                <input type="file" id="input-file-now" class="dropify" name="BannerImg" accept="image/jpg,image/png,image/jpeg" required />
+                            </div>
+                        </div><!-- col-8 -->
+                    </div><!-- row -->
+
+                    <div class="form-layout-footer">
+                        <button class="btn btn-info mg-r-5">Submit</button>
+                        @*<button class="btn btn-secondary" formnovalidate onclick="window.location.href='/Admin'">Cancel</button>*@
+                    </div><!-- form-layout-footer -->
+                </div>
+            }
+
+        </div>
+
+        <div class="card pd-20 pd-sm-40">
+
+            <div class="table-wrapper">
+                <table id="datatable2" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th class="wd-5p">#</th>
+                            <th class="wd-20p">Banner Title</th>
+                            <th class="wd-20p">Banner Des</th>
+                            <th class="wd-20p">Banner Image</th>
+                            <th class="wd-10p">Edit</th>
+                            <th class="wd-20p">Status</th>
+                            <th class="wd-10p">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.BannerList != null)
+                        {
+                            foreach (var i in ViewBag.BannerList)
+                            {
+                                <tr>
+                                    <td>@(++j)</td>
+                                    <td>
+                                        <p style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width: 25em;">
+                                            @i.BannerTitle
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-overflow:ellipsis;white-space:nowrap;overflow:hidden;width: 25em;">
+                                            @i.BannerDes
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <img class="profile-user-img img-responsive img-circle" src="@i.BannerImg.Replace("~", "")" alt="@i.BannerImg" style="height:100px;width:100px">
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Edit('@i.BannerId')">Edit</a>
+                                    </td>
+                                    @if (i.IsActive == "True")
+                                    {
+                                        <td><a href="javascript:void(0)" onclick="ChngStatus('@i.BannerId','@i.IsActive')" class="btn btn-success btn-xs">Active</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a href="javascript:void(0)" onclick="ChngStatus('@i.BannerId','@i.IsActive')" class="btn btn-danger btn-xs">Inactive</a></td>
+                                    }
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Delete('@i.BannerId')" class="btn btn-danger btn-xs">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div><!-- table-wrapper -->
+        </div>
+
+    </div>
+
+</div>
+
+<!--Start Modal-->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Banner Image</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body pd-20">
+                <div class="card">
+                    <form method="post" action="/Homepage/AddBanner" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Banner Title: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" id="BannerText1" required="required" class="form-control" maxlength="100" value="" name="BannerTitle" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Banner Description: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="FullDescription" required="required" class="form-control" name="BannerDes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>
+                                            Banner Image:
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="file" id="input-file-now" class="dropify" name="BannerImg" accept="image/jpg,image/png,image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <img id="img" src="#" style="height:200px;width:200px;margin-top:25px;" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="banner" type="hidden" name="BannerId" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End Modal-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function ChngStatus(id, status) {
+        $.getJSON('/Homepage/BannerStatus/', { id: id, status: status }, function (data) {
+            location.reload();
+        });
+    }
+
+    function Delete(id) {
+        var result = confirm("Are you sure want to delete?");
+        if (result) {
+            $.getJSON('/Homepage/DeleteBanner/', { id: id }, function (data) {
+                location.reload();
+            });
+        }
+    }
+
+    function holdModal(modalId) {
+        $('#' + modalId).modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+    }
+
+    function Edit(id) {
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Homepage/getbanner',
+            data: { id: id },
+            success: function (data) {
+                $("#banner").val(data.BannerId);
+                $("#FullDescription").val(data.BannerDes);
+                //CKEDITOR.instances['FullDescription1'].setData(data.BannerDes);
+                $("#BannerText1").val(data.BannerTitle);
+                $('#img').attr('src', data.BannerImg.replace("~", ""));
+                holdModal('EditModal');
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function (event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function (event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function (e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+</script>

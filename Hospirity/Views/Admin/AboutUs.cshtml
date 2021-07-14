@@ -1,0 +1,422 @@
+﻿
+@{
+    ViewBag.Title = "AboutUs";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    int j = 0;
+}
+
+<style type="text/css">
+    table.dataTable.nowrap th, table.dataTable.nowrap td {
+        white-space: unset !important;
+    }
+</style>
+
+<!-- ########## START: MAIN PANEL ########## -->
+<div class="sl-mainpanel">
+    <nav class="breadcrumb sl-breadcrumb">
+        <a class="breadcrumb-item" href="/Admin">Dashboard</a>
+        <span class="breadcrumb-item active">About Us</span>
+    </nav>
+
+    <div class="sl-pagebody">
+
+        <div class="card pd-20 pd-sm-40">
+            @if (TempData["CMSMSG1"] != null)
+            {
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                    <strong>@TempData["CMSMSG1"]</strong>
+                </div>
+            }
+            <div class="table-wrapper">
+                <table id="datatable2" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="wd-30p">Title</th>
+                            <th class="wd-50p">Description</th>
+                            <th class="wd-10p">Image</th>
+                            <th class="wd-10p">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.AboutUsList != null)
+                        {
+                            foreach (var i in ViewBag.AboutUsList)
+                            {
+                                <tr>
+                                    <td>
+                                        @(++j)
+                                    </td>
+                                    <td>
+                                        @i.AboutTitle
+                                    </td>
+                                    <td>
+                                        @Html.Raw(i.AboutDes)
+                                    </td>
+                                    <td>
+                                        <img class="profile-user-img img-responsive img-circle" src="@i.AboutImg.Replace("~", "")" alt="@i.AboutImg" style="height:100px;width:100px">
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Edit('@i.AboutId')">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div><!-- table-wrapper -->
+        </div>
+
+        <div class="card pd-20 pd-sm-40">
+            <div class="table-wrapper">
+                <table id="datatable3" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="wd-20p">Title</th>
+                            <th class="wd-70p">Description</th>
+                            <th class="wd-10p">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.AboutList != null)
+                        {
+                            foreach (var i in ViewBag.AboutList)
+                            {
+                                <tr>
+                                    <td>
+                                        @(++j)
+                                    </td>
+                                    <td>
+                                        @i.Title
+                                    </td>
+                                    <td>
+                                        @Html.Raw(i.Des)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="Edit1('@i.AboutId')">Edit</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*<div class="card pd-20 pd-sm-40">
+
+            <div class="table-wrapper">
+                <table id="datatable2" class="table display responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="wd-90p">Title</th>
+                            <th class="wd-10p">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @(++j)
+                            </td>
+                            <td>
+                                @Html.Raw(ViewBag.AboutUs.Title)
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" onclick="Edit1('@ViewBag.AboutUs.AboutId')">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+
+    </div>
+
+</div>
+<!-- ########## END: MAIN PANEL ########## -->
+<!--Start Modal 1-->
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit About Us</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body pd-20">
+                <div class="card">
+                    <form method="post" action="/Admin/AboutUs" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Title: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" id="title" required="required" class="form-control" maxlength="250" value="" name="AboutTitle" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Description: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="FullDescription" required="required" class="form-control" name="AboutDes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>
+                                            Image:
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="file" id="input-file-now" class="dropify" name="AboutImg" accept="image/jpg,image/png,image/jpeg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <img id="img" src="#" style="height:200px;width:200px;margin-top:25px;" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="about" type="hidden" name="AboutId" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End Modal 1-->
+<!--Start Modal 2-->
+<div class="modal fade" id="EditModal1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body pd-20">
+                <div class="card">
+                    <form method="post" action="/Admin/AboutUs2" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Title: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="title" required="required" class="form-control" name="Title"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Description: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="FullDescription1" required="required" class="form-control" name="Des"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="about2" type="hidden" name="AboutId" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@*<div class="modal fade" id="EditModal1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            
+            <div class="modal-body pd-20">
+                <div class="card">
+                    <form method="post" action="/Admin/AboutUs1" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Title: <span style="color:red">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <textarea id="FullDescription1" required="required" class="form-control" name="Title"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input id="about1" type="hidden" name="AboutId" class="form-control" />
+
+                            </div>
+                        </div>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+<!--End Modal 2-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="//cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<script type="text/javascript">
+    CKEDITOR.replace("FullDescription");
+    //CKEDITOR.replace("FullDescription1");
+</script>
+
+<script type="text/javascript">
+    function holdModal(modalId) {
+        $('#' + modalId).modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+    }
+
+    function Edit(id) {
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Admin/getaboutus',
+            data: { id: id },
+            success: function (data) {
+                $("#about").val(data.AboutId);
+                $("#title").val(data.AboutTitle);
+                //$("#FullDescription").val(data.BannerDes);
+                CKEDITOR.instances['FullDescription'].setData(data.AboutDes);
+                $('#img').attr('src', data.AboutImg.replace("~", ""));
+                holdModal('EditModal');
+            }
+        });
+    }
+
+    function Edit1(id) {
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Admin/getaboutus1',
+            data: { id: id },
+            success: function (data) {
+                $("#about1").val(data.AboutId);
+                CKEDITOR.instances['FullDescription1'].setData(data.Title);
+                holdModal('EditModal1');
+            }
+        });
+    }
+
+    function Edit2(id) {
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Admin/getaboutus2',
+            data: { id: id },
+            success: function (data) {
+                $("#about2").val(data.AboutId);
+                $("#title").val(data.Title);
+                $("#FullDescription1").val(data.Des);
+                //CKEDITOR.instances['FullDescription1'].setData(data.Des);
+                holdModal('EditModal1');
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function (event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function (event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function (e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+</script>
+
+@*<script type="text/javascript">
+        $('#zero_config').DataTable();
+    </script>*@
